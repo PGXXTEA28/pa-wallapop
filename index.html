@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- META REFERRER: CRUCIAL PARA EVITAR EL ERROR 403 DE WALLAPOP -->
+    <meta name="referrer" content="no-referrer">
+    <title>Proyectos Alex</title>
+    
+    <!-- Tailwind CSS (Diseño) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons (Iconos) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Animaciones suaves */
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body { background-color: #030712; color: white; font-family: system-ui, -apple-system, sans-serif; }
+        /* Scrollbar elegante */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-lg font-bold shadow-lg shadow-cyan-500/20 text-white">
+                    PA
+                </div>
+                <span class="font-bold text-xl tracking-tight text-white">PROYECTOS <span class="text-cyan-400">ALEX</span></span>
+            </div>
+            <div class="flex gap-4">
+                <a href="https://instagram.com/proyectos.alex" target="_blank" rel="noreferrer" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                    <i data-lucide="instagram"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-16 px-4 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-cyan-500/5 to-transparent blur-3xl pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-gray-800/50 border border-gray-700 text-sm text-cyan-400 font-medium backdrop-blur-sm fade-in">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Comercio Local & Grandes Ideas</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight fade-in text-white">
+                Donde los Pequeños <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">Proyectos Crecen</span>
+            </h1>
+            
+            <!-- BUSCADOR Y FILTROS -->
+            <div class="max-w-2xl mx-auto flex flex-col md:flex-row gap-3 relative fade-in">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar patinetes, juegos..." class="w-full bg-gray-900 border border-gray-700 rounded-xl py-4 pl-12 pr-4 text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all">
+                </div>
+                <div class="relative w-full md:w-auto">
+                    <i data-lucide="arrow-up-down" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-cyan-400 w-4 h-4"></i>
+                    <select id="sortSelect" class="w-full md:w-64 appearance-none bg-gray-800 border border-gray-700 rounded-xl py-4 pl-12 pr-10 text-white focus:border-cyan-500 outline-none cursor-pointer font-medium transition-all hover:bg-gray-750">
+                        <option value="category">Categoría (A-Z)</option>
+                        <option value="price-asc">Precio: Bajo a Alto</option>
+                        <option value="price-desc">Precio: Alto a Bajo</option>
+                    </select>
+                    <i data-lucide="filter" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none w-4 h-4"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GRID PRODUCTOS -->
+    <section class="py-12 bg-black min-h-[600px] border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-end mb-10 px-2 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold flex items-center gap-2 text-white"><i data-lucide="layers" class="text-cyan-400"></i> Disponibles</h2>
+                    <p class="text-gray-500 text-sm mt-1">Explora la lista completa de artículos</p>
+                </div>
+                <span id="itemCount" class="text-xs font-mono text-gray-500 bg-gray-900 px-2 py-1 rounded border border-gray-800">0 ITEMS</span>
+            </div>
+
+            <!-- AVISO IMPORTANTE -->
+            <div class="flex gap-3 items-center justify-center mb-8 bg-yellow-500/10 border border-yellow-500/30 p-3 rounded-xl text-yellow-200 text-sm">
+                <i data-lucide="info" class="w-5 h-5"></i>
+                <span>Si el enlace no abre, <b>usa el botón de copiar</b> y pégalo en tu navegador.</span>
+            </div>
+
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-12">
+                <!-- AQUÍ SE INYECTAN LOS PRODUCTOS CON JS -->
+            </div>
+            
+            <div class="flex justify-center pb-20">
+                <a href="https://href.li/?https://es.wallapop.com/user/lexb-446364407" target="_blank" rel="noreferrer" class="group flex items-center gap-3 px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-xl border border-gray-800 hover:border-cyan-500/30 transition-all">
+                    <i data-lucide="shopping-bag" class="text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                    <span>Ver perfil completo en Wallapop</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="py-24 bg-gray-950 border-t border-gray-900 text-center">
+        <h2 class="text-3xl font-bold mb-6 text-white">¿Te interesa comprar algo?</h2>
+        <p class="text-gray-400 mb-8 text-lg">Escríbeme un mensaje directo por Instagram y cerramos el trato.</p>
+        <div class="flex justify-center">
+           <a href="https://www.instagram.com/proyectos.alex" target="_blank" rel="noreferrer" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:opacity-90 transition-all transform hover:scale-105 shadow-lg shadow-purple-500/20">
+              <i data-lucide="instagram"></i>
+              Enviar DM en Instagram
+           </a>
+        </div>
+    </section>
+
+    <footer class="py-8 bg-black border-t border-gray-900 text-center text-gray-600 text-xs font-mono">
+        <p>© 2025 PROYECTOS ALEX.</p>
+    </footer>
+
+    <!-- CHATBOT FLOTANTE -->
+    <div id="chatContainer" class="fixed bottom-24 right-6 w-80 sm:w-96 bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl z-50 flex flex-col h-[450px] hidden fade-in">
+        <div class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700 rounded-t-2xl">
+            <h3 class="font-bold text-white flex items-center gap-2">Alex IA <i data-lucide="sparkles" class="text-cyan-400 w-4 h-4"></i></h3>
+            <button onclick="toggleChat()" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="x"></i></button>
+        </div>
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-black/50">
+            <div class="flex justify-start">
+                <div class="max-w-[85%] p-3 rounded-2xl text-sm shadow-sm bg-gray-800 text-gray-200 border border-gray-700 rounded-tl-none">
+                    ¡Hola! Soy el asistente virtual de Proyectos Alex. 🤖 ¿Buscas algo en concreto? Pregúntame por precios o categorías.
+                </div>
+            </div>
+        </div>
+        <form id="chatForm" class="p-3 bg-gray-800 border-t border-gray-700 flex gap-2 rounded-b-2xl">
+            <input type="text" id="chatInput" placeholder="Escribe aquí..." class="flex-1 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 border border-gray-700 outline-none focus:border-cyan-500 transition-colors">
+            <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-black p-3 rounded-xl transition-colors"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </form>
+    </div>
+
+    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-4 rounded-full shadow-lg shadow-cyan-500/30 z-50 group flex items-center gap-2 hover:shadow-xl transition-all border border-white/10">
+        <i data-lucide="message-circle"></i>
+    </button>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DATOS
+        const products = [
+            { id: 1, name: "Patinete Freestyle NKD", price: "70 €", link: "https://es.wallapop.com/item/patinete-freestyle-nkd-1199972777", condition: "Usado", category: "Deporte" },
+            { id: 2, name: "Patinete Eléctrico Personalizado", price: "280 €", link: "https://es.wallapop.com/item/patinete-electrico-personalizado-1199945459", condition: "Custom", category: "Transporte" },
+            { id: 3, name: "Patinete eléctrico ZWHEEL Z800", price: "310 €", link: "https://es.wallapop.com/item/patinete-electrico-zwheel-z800-1177257613", condition: "Como nuevo", category: "Transporte" },
+            { id: 4, name: "Patinete Eléctrico", price: "280 €", link: "https://es.wallapop.com/item/patinete-electrico-1198789289", condition: "Usado", category: "Transporte" },
+            { id: 5, name: "Cuentos para dormir", price: "5 €", link: "https://es.wallapop.com/item/cuentos-para-dormir-1050199734", condition: "Libros", category: "Ocio" },
+            { id: 6, name: "Gafas VR para teléfono móvil", price: "5 €", link: "https://es.wallapop.com/item/gafas-3d-para-telefono-movil-1050200392", condition: "Nuevo", category: "Tech" },
+            { id: 7, name: "Afeitadora PHILISHAVE Retro", price: "5 €", link: "https://es.wallapop.com/item/afeitadora-philishave-retro-1167564407", condition: "Vintage", category: "Hogar" },
+            { id: 8, name: "Patinete manual Decathlon", price: "40 €", link: "https://es.wallapop.com/item/patinete-manual-decathlon-1185366491", condition: "Buen estado", category: "Deporte" },
+            { id: 9, name: "Gafas de protección 3M", price: "5 €", link: "https://es.wallapop.com/item/gafas-de-proteccion-1090402335", condition: "Útil", category: "Hogar" },
+            { id: 10, name: "Botijos (Colección Principal)", price: "1 €", link: "https://es.wallapop.com/item/botijos-1048603463", condition: "Decoración", category: "Hogar" },
+            { id: 11, name: "Libros de Karlos Arguiñano", price: "5 €", link: "https://es.wallapop.com/item/libros-de-karlos-arguinano-1054113842", condition: "Cocina", category: "Cocina" },
+            { id: 12, name: "Juegos de mesa (Pictureka)", price: "5 €", link: "https://es.wallapop.com/item/juegos-de-mesa-1049858529", condition: "Ocio", category: "Ocio" },
+            { id: 13, name: "Sujeta auriculares", price: "8 €", link: "https://es.wallapop.com/item/sujeta-auriculares-1107526068", condition: "Setup", category: "Tech" },
+            { id: 14, name: "Teclado G-LAB", price: "10 €", link: "https://es.wallapop.com/item/teclado-g-lab-1107530685", condition: "Gaming", category: "Tech" },
+            { id: 15, name: "DVD Reproductor", price: "5 €", link: "https://es.wallapop.com/item/dvd-1104292239", condition: "Cine", category: "Tech" },
+            { id: 16, name: "Cargador (Airsoft/Juguete)", price: "5 €", link: "https://es.wallapop.com/item/cargador-1090400496", condition: "Accesorios", category: "Ocio" },
+            { id: 17, name: "Extractor de leche materna", price: "8 €", link: "https://es.wallapop.com/item/extractor-de-leche-materna-1104289219", condition: "Bebés", category: "Hogar" },
+            { id: 18, name: "Ratón G-LAB", price: "10 €", link: "https://es.wallapop.com/item/raton-g-lab-1107528279", condition: "Gaming", category: "Tech" },
+            { id: 19, name: "Alfombra teclado y ratón (RGB)", price: "10 €", link: "https://es.wallapop.com/item/alfombra-para-teclado-y-raton-1107539889", condition: "Setup", category: "Tech" },
+            { id: 20, name: "Juegos de mesa (Mecánica)", price: "8 €", link: "https://es.wallapop.com/item/juegos-de-mesa-1088843193", condition: "Educativo", category: "Ocio" },
+            { id: 21, name: "Cometa Decathlon", price: "5 €", link: "https://es.wallapop.com/item/cometa-1090426546", condition: "Aire Libre", category: "Deporte" },
+            { id: 22, name: "Botijos (Lote Extra)", price: "5 €", link: "https://es.wallapop.com/item/botijos-1058525766", condition: "Decoración", category: "Hogar" }
+        ];
+
+        // IMÁGENES DE PRODUCTOS
+        const productImages = [
+            { id: 1, image: "images/product_1.jpg" },
+            { id: 2, image: "images/product_2.jpg" },
+            { id: 3, image: "images/product_3.jpg" },
+            { id: 4, image: "images/product_4.jpg" },
+            { id: 5, image: "images/product_5.jpg" },
+            { id: 6, image: "images/product_6.jpg" },
+            { id: 7, image: "images/product_7.jpg" },
+            { id: 8, image: "images/product_8.jpg" },
+            { id: 9, image: "images/product_9.jpg" },
+            { id: 10, image: "images/product_10.jpg" },
+            { id: 11, image: "images/product_11.jpg" },
+            { id: 12, image: "images/product_12.jpg" },
+            { id: 13, image: "images/product_13.jpg" },
+            { id: 14, image: "images/product_14.jpg" },
+            { id: 15, image: "images/product_15.jpg" },
+            { id: 16, image: "images/product_16.jpg" },
+            { id: 17, image: "images/product_17.jpg" },
+            { id: 18, image: "images/product_18.jpg" },
+            { id: 19, image: "images/product_19.jpg" },
+            { id: 20, image: "images/product_20.jpg" },
+            { id: 21, image: "images/product_21.jpg" },
+            { id: 22, image: "images/product_22.jpg" }
+        ];
+
+        // Función para obtener imagen por ID
+        const getProductImage = (id) => {
+            const img = productImages.find(p => p.id === id);
+            return img ? img.image : null;
+        };
+
+
+        // ESTILOS CATEGORIAS
+        const getCategoryStyle = (cat) => {
+            const styles = {
+                "Transporte": { color: "from-indigo-600 to-blue-500", icon: "bike" },
+                "Deporte": { color: "from-blue-600 to-cyan-400", icon: "trophy" },
+                "Tech": { color: "from-violet-600 to-fuchsia-400", icon: "smartphone" },
+                "Hogar": { color: "from-amber-500 to-orange-400", icon: "home" },
+                "Ocio": { color: "from-emerald-500 to-teal-400", icon: "gamepad-2" },
+                "Cocina": { color: "from-red-500 to-rose-400", icon: "utensils" }
+            };
+            return styles[cat] || { color: "from-gray-600 to-slate-400", icon: "package" };
+        };
+
+        // RENDERIZAR PRODUCTOS
+        const renderProducts = () => {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const sortType = document.getElementById('sortSelect').value;
+            const grid = document.getElementById('productsGrid');
+            
+            let filtered = products.filter(p => 
+                p.name.toLowerCase().includes(search) || 
+                p.category.toLowerCase().includes(search)
+            );
+
+            filtered.sort((a, b) => {
+                if (sortType === 'category') return a.category.localeCompare(b.category);
+                const priceA = parseInt(a.price.replace(' €', '').replace('.', ''));
+                const priceB = parseInt(b.price.replace(' €', '').replace('.', ''));
+                return sortType === 'price-asc' ? priceA - priceB : priceB - priceA;
+            });
+
+            document.getElementById('itemCount').textContent = `${filtered.length} ITEMS`;
+            grid.innerHTML = '';
+
+            filtered.forEach(item => {
+                const { color, icon } = getCategoryStyle(item.category);
+                const safeLink = `https://href.li/?${item.link}`;
+                
+                const card = document.createElement('div');
+                card.className = 'block group relative h-full fade-in';
+                card.innerHTML = `
+                    <div class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-gray-600 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col shadow-lg">
+                        <a href="${safeLink}" target="_blank" rel="noreferrer noopener" class="relative block">
+                            <div class="h-48 bg-gray-800 relative overflow-hidden">
+                                ${getProductImage(item.id) ? `<img src="${getProductImage(item.id)}" alt="${item.name}" class="w-full h-full object-cover">` : `<div class="h-full bg-gradient-to-br ${color} flex items-center justify-center"><i data-lucide="${icon}" class="text-white w-12 h-12"></i></div>`}
+                                <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider border border-white/10">${item.category}</div>
+                            </div>
+                        </a>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i data-lucide="tag" class="text-gray-500 w-3 h-3"></i>
+                                <span class="text-xs font-medium text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full border border-gray-700">${item.condition}</span>
+                            </div>
+                            <a href="${safeLink}" target="_blank" rel="noreferrer noopener" class="font-bold text-lg mb-2 leading-snug group-hover:text-cyan-400 transition-colors block text-white decoration-0">${item.name}</a>
+                            <div class="mt-auto pt-4 flex justify-between items-end border-t border-gray-800">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-500 mb-0.5">Precio</span>
+                                    <span class="text-2xl font-bold text-white tracking-tight">${item.price}</span>
+                                </div>
+                                <div class="flex gap-2 items-center">
+                                    <button onclick="copyLink('${item.link}', this)" class="p-3 rounded-full transition-all flex items-center justify-center border border-gray-700 bg-gray-800 text-white hover:bg-gray-700" title="Copiar enlace">
+                                        <i data-lucide="copy" class="w-4 h-4"></i>
+                                    </button>
+                                    <a href="${safeLink}" target="_blank" rel="noreferrer noopener" class="bg-gray-800 p-3 rounded-full text-gray-400 group-hover:bg-cyan-500 group-hover:text-black transition-all border border-gray-700">
+                                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            // Reinicializar iconos después de inyectar HTML
+            lucide.createIcons();
+        };
+
+        // FUNCIONALIDAD DE COPIAR
+        window.copyLink = (link, btn) => {
+            navigator.clipboard.writeText(link).then(() => {
+                const icon = btn.querySelector('i'); // Seleccionar el icono SVG dentro del botón
+                // Reemplazar temporalmente el icono con "Check"
+                // Para simplificar con Lucide en HTML, cambiamos la clase o color
+                btn.classList.remove('bg-gray-800', 'border-gray-700');
+                btn.classList.add('bg-green-500', 'border-green-500', 'text-black');
+                
+                setTimeout(() => {
+                    btn.classList.remove('bg-green-500', 'border-green-500', 'text-black');
+                    btn.classList.add('bg-gray-800', 'border-gray-700');
+                }, 2000);
+            });
+        };
+
+        // CHATBOT
+        function toggleChat() {
+            const chat = document.getElementById('chatContainer');
+            chat.classList.toggle('hidden');
+        }
+
+        document.getElementById('chatForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const chatBox = document.getElementById('chatMessages');
+            
+            // Mensaje usuario
+            const userDiv = document.createElement('div');
+            userDiv.className = 'flex justify-end fade-in';
+            userDiv.innerHTML = `<div class="max-w-[85%] p-3 rounded-2xl text-sm shadow-sm bg-cyan-600 text-white rounded-tr-none">${msg}</div>`;
+            chatBox.appendChild(userDiv);
+            
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Respuesta bot (simulada)
+            setTimeout(() => {
+                let reply = "¡Interesante! Para cerrar el trato, escríbeme por Instagram DM. 🚀";
+                const text = msg.toLowerCase();
+                if (text.includes("hola")) reply = "¡Hola! ¿En qué puedo ayudarte hoy? 😊";
+                if (text.includes("precio")) reply = "Los precios varían desde 1€ hasta 310€. ¡Hay gangas!";
+                if (text.includes("patinete")) reply = "Tenemos 4 patinetes disponibles. El ZWHEEL es el más potente.";
+                
+                const botDiv = document.createElement('div');
+                botDiv.className = 'flex justify-start fade-in';
+                botDiv.innerHTML = `<div class="max-w-[85%] p-3 rounded-2xl text-sm shadow-sm bg-gray-800 text-gray-200 border border-gray-700 rounded-tl-none">${reply}</div>`;
+                chatBox.appendChild(botDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        });
+
+        // EVENT LISTENERS
+        document.getElementById('searchInput').addEventListener('input', renderProducts);
+        document.getElementById('sortSelect').addEventListener('change', renderProducts);
+
+        // INICIALIZAR
+        renderProducts();
+    </script>
+</body>
+</html>
